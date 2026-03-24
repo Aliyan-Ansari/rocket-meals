@@ -64,11 +64,26 @@ export type SettingsState = {
         simulateExpoUpdateAvailable: boolean;
         collectibleItemSize: 'small' | 'medium' | 'large';
         collectibleRandomPosition: boolean;
+        offlineMode: boolean;
         mapTileVariantKey: string;
         mapUseFlyAnimation: boolean;
         mapVirtualZoom: number | null;
         mapOrganisationFilter: Record<string, boolean>;
         mapClusterPixelRadius: number;
+        osmVectorMapStyleKey: string;
+        osmVectorMapUseFlyAnimation: boolean;
+        osmVectorMapOrganisationFilter: Record<string, boolean>;
+        osmVectorMapPitch: string;
+        osmVectorMapClusterDistance: number;
+        osmVectorMapShowControlsHint: boolean;
+        osmVectorMapGameMode: boolean;
+        osmVectorMapAutoRotateMode: boolean;
+        osmVectorMapPeopleMode: boolean;
+        osmVectorMapIntelligentMovement: boolean;
+        osmVectorMapPeopleCount: number;
+        osmVectorMapCarMode: boolean;
+        pirateLanguage: boolean;
+        funLanguageMode: string | null;
 }
 
 export type FoodState = {

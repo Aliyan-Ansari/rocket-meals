@@ -16,6 +16,10 @@ import { useAppSelector } from '@/redux/hooks';
 
 type CollectibleKey = (typeof COLLECTABLE_AT_FIELDS)[number];
 
+type CollectibleEventParticipationPayload = Partial<DatabaseTypes.CollectibleEventParticipants> & {
+        data?: unknown;
+};
+
 type CollectibleItemProps = {
         collectibleKey: CollectibleKey;
         hideOnCollect?: boolean;
@@ -116,12 +120,12 @@ const CollectibleItem: React.FC<CollectibleItemProps> = ({
 
                 setIsSaving(true);
                 try {
-                const updatePayload: Partial<DatabaseTypes.CollectibleEventParticipants> = {
-                        points: updatedCount,
+                const updatePayload: CollectibleEventParticipationPayload = {
+                        points: String(updatedCount),
                         data: updatedData,
                 };
 
-                const createPayload: Partial<DatabaseTypes.CollectibleEventParticipants> = {
+                const createPayload: CollectibleEventParticipationPayload = {
                         ...updatePayload,
                         profile: profile.id,
                         collectible_event: activeCollectibleEvent.id,

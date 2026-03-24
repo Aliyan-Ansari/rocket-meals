@@ -1,5 +1,5 @@
 import React, { memo, useMemo } from 'react';
-import { View } from 'react-native';
+import { View, type DimensionValue } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import { TranslationKeys } from '@/locales/keys';
 import SettingsListBoolean from '@/components/SettingsListBoolean';
@@ -8,7 +8,7 @@ import styles from '../styles';
 
 interface NotificationSectionProps {
     theme: any;
-    containerWidth: string | number;
+    containerWidth: DimensionValue;
     translate: (key: string) => string;
     previousFeedback: any;
     updateNotification: () => void;

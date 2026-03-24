@@ -45,6 +45,14 @@ type ExtendedCollectibleEvent = DatabaseTypes.CollectibleEvents & {
         [key: string]: any;
 };
 
+type ExtendedCollectibleEventParticipants = DatabaseTypes.CollectibleEventParticipants & {
+        data?: unknown;
+};
+
+type CollectibleEventParticipationPayload = Partial<DatabaseTypes.CollectibleEventParticipants> & {
+        data?: unknown;
+};
+
 const getGroupPosition = (index: number, length: number): GroupPosition => {
         if (length === 1) return 'single';
         if (index === 0) return 'top';
@@ -202,7 +210,7 @@ const CollectibleEventScreen = () => {
         const [isLoading, setIsLoading] = useState(false);
         const [isSaving, setIsSaving] = useState(false);
         const [isPermissionModalVisible, setIsPermissionModalVisible] = useState(false);
-        const [participation, setParticipation] = useState<DatabaseTypes.CollectibleEventParticipants | null>(null);
+        const [participation, setParticipation] = useState<ExtendedCollectibleEventParticipants | null>(null);
         const [visibleHints, setVisibleHints] = useState<Record<string, boolean>>({});
 
         const serverCollectedCount = useMemo(
@@ -324,7 +332,7 @@ const CollectibleEventScreen = () => {
                                 setParticipation(existing);
                                 setEmail(existing.email ?? '');
                                 setPhoneNumber(existing.phone_number ?? '');
-                                applyServerCollectibleData(existing.data);
+                                applyServerCollectibleData((existing as ExtendedCollectibleEventParticipants)?.data);
                         } else {
                                 setParticipation(null);
                                 setEmail('');
@@ -362,14 +370,14 @@ const CollectibleEventScreen = () => {
 
                 setIsSaving(true);
                 try {
-                const updatePayload: Partial<DatabaseTypes.CollectibleEventParticipants> = {
-                        points: pointsToSave,
+                const updatePayload: CollectibleEventParticipationPayload = {
+                        points: String(pointsToSave),
                         email: email?.trim() || null,
                         phone_number: phoneNumber?.trim() || null,
                         data: collectibleDict,
                 };
 
-                const createPayload: Partial<DatabaseTypes.CollectibleEventParticipants> = {
+                const createPayload: CollectibleEventParticipationPayload = {
                         ...updatePayload,
                         profile: profile.id,
                         collectible_event: activeCollectibleEvent.id,
@@ -418,8 +426,8 @@ const CollectibleEventScreen = () => {
                                 );
 
                                 if (existing?.id) {
-                                        await participantsHelper.updateItem(existing.id, { points: 0, data: {} });
-                                        setParticipation(prev => (prev ? { ...prev, points: 0, data: {} } : prev));
+                                        await participantsHelper.updateItem(existing.id, { points: '0', data: {} } as CollectibleEventParticipationPayload);
+                                        setParticipation(prev => (prev ? { ...(prev as any), points: '0', data: {} } : prev));
                                         toast(translate(TranslationKeys.reset), 'success');
                                 }
                         } catch (error) {

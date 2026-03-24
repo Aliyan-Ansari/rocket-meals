@@ -4,6 +4,16 @@ export default StyleSheet.create({
 	container: {
 		flex: 1,
 	},
+	contentContainer: {
+		alignItems: 'center',
+		padding: 16,
+	},
+	gifContainer: {
+		width: '100%',
+		height: 260,
+		alignItems: 'center',
+		justifyContent: 'center',
+	},
 	eatingHabitsContainer: {
 		width: '100%',
 	},

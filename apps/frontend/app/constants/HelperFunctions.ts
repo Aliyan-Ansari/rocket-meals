@@ -241,12 +241,11 @@ export function formatFoodInformationValue(value: string | number | null | undef
 }
 
 export const getpreviousFeedback = (feedbacks: any, foodId: string) => {
-	const feedback = feedbacks.filter((feedback: any) => feedback.food === foodId);
-	if (feedback.length > 0) {
-		return feedback[0];
-	} else {
+	if (!Array.isArray(feedbacks)) {
 		return {};
 	}
+	const feedback = feedbacks.find((f: any) => f.food === foodId);
+	return feedback || {};
 };
 
 export const getFoodOffer = (foodOffers: any, offerId: string) => {

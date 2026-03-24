@@ -1,5 +1,5 @@
 import React, { memo, useCallback } from 'react';
-import { View } from 'react-native';
+import { View, type DimensionValue } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { CustomTooltip, TooltipContent, TooltipText } from '@/components/CustomTooltip';
 import IconButton from '@/components/UI/IconButton';
@@ -13,7 +13,7 @@ interface TabControllerProps {
     theme: any;
     contrastColor: string;
     translate: (key: string) => string;
-    containerWidth: string | number;
+    containerWidth: DimensionValue;
     foodsAreaColor: string;
 }
 
@@ -69,7 +69,7 @@ const TabController = ({
         <View
             style={[
                 styles.tabViewContainer,
-                { width: containerWidth as number }
+                { width: containerWidth }
             ]}
         >
             <View

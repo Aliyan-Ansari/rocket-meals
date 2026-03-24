@@ -43,7 +43,7 @@ export interface FoodOfferDetailsContentProps {
 }
 
 const selectFoodState = (state: RootState) => state.food;
-const selectOwnFoodFeedbacks = createSelector([selectFoodState], foodState => foodState.ownFoodFeedbacks);
+const selectOwnFoodFeedbacksDict = createSelector([selectFoodState], foodState => foodState.ownFoodFeedbacksDict);
 
 const FoodOfferDetailsContent: React.FC<FoodOfferDetailsContentProps> = ({ offerId, foodId: initialFoodId }) => {
     const { theme } = useTheme();
@@ -62,11 +62,11 @@ const FoodOfferDetailsContent: React.FC<FoodOfferDetailsContentProps> = ({ offer
     const serverInfo = useAppSelector((state) => state.settings.serverInfo, shallowEqual);
     const mode = useAppSelector((state) => state.settings.selectedTheme);
 
-    const ownFoodFeedbacks = useAppSelector(selectOwnFoodFeedbacks);
+    const ownFoodFeedbacksDict = useAppSelector(selectOwnFoodFeedbacksDict);
     const previousFeedback = useMemo(() => {
-        const result = initialFoodId ? getpreviousFeedback(ownFoodFeedbacks, initialFoodId.toString()) : undefined;
-        return result;
-    }, [ownFoodFeedbacks, initialFoodId]);
+        const key = initialFoodId ? String(initialFoodId) : undefined;
+        return key ? (ownFoodFeedbacksDict as any)?.[key] || {} : undefined;
+    }, [ownFoodFeedbacksDict, initialFoodId]);
 
     const profileHelper = useMemo(() => new ProfileHelper(), []);
     const foodfeedbackHelper = useMemo(() => new FoodFeedbackHelper(), []);
@@ -220,8 +220,8 @@ const FoodOfferDetailsContent: React.FC<FoodOfferDetailsContentProps> = ({ offer
         }
     }, [previousFeedback, foodOfferCanteenId, foodDetails, profile, dispatch, foodfeedbackHelper]);
 
-    const getContainerWidth = useMemo(() => {
-        let containerWidth = '100%';
+    const getContainerWidth = useMemo<DimensionValue>(() => {
+        let containerWidth: DimensionValue = '100%';
         if (isWeb) {
             if (screenWidth < 600) {
                 containerWidth = '95%';

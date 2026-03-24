@@ -36,8 +36,8 @@ import { RateAppSettingsItem } from '@/components/RateAppSettingsItem/RateAppSet
 
 
 const selectFoodState = (state: RootState) => state.food;
-const selectMarkings = createSelector([selectFoodState], foodState => foodState.markings);
-const selectOwnFoodFeedbacks = createSelector([selectFoodState], foodState => foodState.ownFoodFeedbacks);
+const selectMarkings = createSelector([selectFoodState], foodState => Object.values(foodState.markingsDict || {}));
+const selectOwnFoodFeedbacksDict = createSelector([selectFoodState], foodState => foodState.ownFoodFeedbacksDict);
 
 export const FoodItemBase: React.FC<FoodItemProps> = memo(
   ({ 
@@ -495,15 +495,16 @@ const FoodItemConnected: React.FC<FoodItemProps> = (props) => {
     const profileMarkings = useAppSelector((state) => state.authReducer.profile?.markings);
     const priceGroup = useAppSelector((state) => state.authReducer.profile?.price_group);
 
-    const ownFoodFeedbacks = useAppSelector(selectOwnFoodFeedbacks);
+    const ownFoodFeedbacksDict = useAppSelector(selectOwnFoodFeedbacksDict);
 
     const previousFeedback = useMemo(() => {
         if (props.previousFeedback) return props.previousFeedback;
         const food = item?.food as any;
         const foodId = food ? (typeof food === 'string' ? food : food.id) : undefined;
         if (!foodId) return undefined;
-        return getpreviousFeedback(ownFoodFeedbacks as any, foodId);
-    }, [props.previousFeedback, item, ownFoodFeedbacks]);
+        const key = String(foodId);
+        return (ownFoodFeedbacksDict as any)?.[key] || {};
+    }, [props.previousFeedback, item, ownFoodFeedbacksDict]);
     
     const profile = useMemo(() => {
         if (props.profile) return props.profile;

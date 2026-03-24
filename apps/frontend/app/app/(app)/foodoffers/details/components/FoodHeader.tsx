@@ -1,5 +1,5 @@
 import React, { memo, useMemo, useCallback } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Dimensions } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, Dimensions, type DimensionValue } from 'react-native';
 import { AntDesign, MaterialIcons } from '@expo/vector-icons';
 import { CustomTooltip, TooltipContent, TooltipText } from '@/components/CustomTooltip';
 import IconButton from '@/components/UI/IconButton';
@@ -22,7 +22,7 @@ interface FoodHeaderProps {
     translate: (key: string) => string;
     defaultImage?: string | null;
     isAccountRequired?: boolean;
-    containerWidth?: string | number;
+    containerWidth?: DimensionValue;
 }
 
 const FoodHeader = ({

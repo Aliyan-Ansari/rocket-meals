@@ -183,7 +183,7 @@ const Index = () => {
 						backgroundColor: theme.screen.iconBg,
 						paddingHorizontal: windowWidth > 600 ? 20 : 10,
 					}}
-					onPress={() => openCanteenModal('optional')}
+					onPress={() => openCanteenModal('additional')}
 				>
 					<View style={styles.col1}>
 						<Ionicons name="restaurant-sharp" size={24} color={theme.screen.icon} />

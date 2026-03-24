@@ -26,12 +26,15 @@ const CollectibleEventMonitor = () => {
 	);
 
 	const backgroundImageUrl = useMemo(() => {
-		if (activeCollectibleEvent?.monitor_background_image_remote_url) {
-			return activeCollectibleEvent.monitor_background_image_remote_url;
+		const remoteUrl = (activeCollectibleEvent as any)?.monitor_background_image_remote_url;
+		if (remoteUrl) {
+			return remoteUrl as string;
 		}
 
 		if (activeCollectibleEvent?.monitor_background_image) {
-			return getHighResImageUrl(String(activeCollectibleEvent.monitor_background_image), 1920);
+			const image = activeCollectibleEvent.monitor_background_image as any;
+			const imageId = typeof image === 'string' ? image : image?.id;
+			return imageId ? getHighResImageUrl(String(imageId), 1920) : null;
 		}
 
 		return null;

@@ -69,7 +69,7 @@ export const RateAppSettingsItem: React.FC<RateAppSettingsItemProps> = ({ groupP
 						<SettingsList
 							key={row.key}
 							label={row.label}
-							handleFunction={row.url ? () => openStore(row.url, row.store) : undefined}
+							handleFunction={row.url ? () => openStore(row.url as string, row.store) : undefined}
 							groupPosition={computedGroupPosition}
 							showSeparator={!isLast}
 							iconBgColor={RATE_APP_ICON_BACKGROUND}

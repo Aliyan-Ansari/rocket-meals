@@ -111,14 +111,14 @@ export const useFoodOffersData = (
     const updateSort = useCallback((id: FoodSortOption, foodOffers: DatabaseTypes.Foodoffers[]) => {
         const { profile, languageCode } = stateRef.current;
         const state = store.getState() as RootState;
-        const { ownFoodFeedbacks, foodCategories, foodOfferCategories } = state.food;
+        const { ownFoodFeedbacksDict, foodCategoriesDict, foodOfferCategoriesDict } = state.food;
 
         const sortedOffers = sortFoodOffers(id, foodOffers, {
             languageCode,
-            ownFoodFeedbacks,
+            ownFoodFeedbacks: Object.values(ownFoodFeedbacksDict || {}),
             profile: profile || { markings: [] },
-            foodCategories,
-            foodOfferCategories,
+            foodCategories: Object.values(foodCategoriesDict || {}),
+            foodOfferCategories: Object.values(foodOfferCategoriesDict || {}),
         });
         dispatch({ type: SET_SELECTED_CANTEEN_FOOD_OFFERS, payload: sortedOffers });
     }, [dispatch, store]); // store is stable
@@ -147,10 +147,7 @@ export const useFoodOffersData = (
                 
                 // Always resort with current sortBy to reflect UI changes
                 updateSort(sortBy as FoodSortOption, foodOffers);
-                // Dispatch local raw offers only if reference changed
-                if (foodOffers !== currentFoodOffers) {
-                    dispatch({ type: SET_SELECTED_CANTEEN_FOOD_OFFERS_LOCAL, payload: foodOffers });
-                }
+                dispatch({ type: SET_SELECTED_CANTEEN_FOOD_OFFERS_LOCAL, payload: foodOffers });
             } catch (error) {
                 console.error('Error fetching Food Offers:', error);
             } finally {
@@ -179,7 +176,7 @@ export const useFoodOffersData = (
                 }
             }
         });
-    }, [selectedCanteen, selectedDate, getCachedOffers, prefetchedFoodOffers, updateSort, sortBy, dispatch, currentFoodOffers]);
+    }, [selectedCanteen, selectedDate, getCachedOffers, prefetchedFoodOffers, updateSort, sortBy, dispatch]);
 
     const fetchCanteenLabels = useCallback(async () => {
         try {
